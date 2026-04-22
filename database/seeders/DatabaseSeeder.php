@@ -15,6 +15,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             VendorSeeder::class,
             UserSeeder::class,
+
+            VisaCategorySeeder::class,
+            CountrySeeder::class,
+
+            CustomerSeeder::class,
         ]);
     }
 }

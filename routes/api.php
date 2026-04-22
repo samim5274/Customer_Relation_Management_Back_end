@@ -47,3 +47,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/edit-vendor/{id}', [VendorController::class, 'editVendor'])->where('id', '[0-9]+');
     });
 });
+
+
+// ======================
+// Customer Routes
+// ======================
+use App\Http\Controllers\Customer\CustomerController;
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('customers')->group(function() {
+        Route::get('/', [CustomerController::class, 'getCustomers']);
+        Route::get('/get-visa-category', [CustomerController::class, 'getVisaCategory']);
+        Route::get('/get-country', [CustomerController::class, 'getCountry']);
+    });
+});
