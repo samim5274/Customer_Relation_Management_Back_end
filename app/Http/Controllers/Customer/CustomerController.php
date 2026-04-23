@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use App\Http\Requests\StoreCustomerRequest;
 use App\Models\Customer;
 use App\Models\VisaCategory;
 use App\Models\Country;
@@ -71,5 +72,59 @@ class CustomerController extends Controller
                 ], 500);
             }
         
+    }
+
+    public function createCustomer(StoreCustomerRequest $request)
+    {
+        DB::beginTransaction();
+
+        try{
+            $data = $request->validated();
+
+            // safe upload
+            $upload = function ($field, $folder) use ($request) {
+                if ($request->hasFile($field)) {
+                    return $request->file($field)->store($folder, 'public');
+                }
+                return null;
+            };
+
+            // files
+            $data['photo'] = $upload('user_photo', 'customers/photo');
+            $data['passport_photo'] = $upload('passport_photo', 'customers/passport');
+            $data['national_id_photo'] = $upload('nid_photo', 'customers/nid');
+            $data['spouse_photo'] = $upload('spouse_photo', 'customers/spouse');
+            $data['spouse_nid_photo'] = $upload('spouse_nid_photo', 'customers/spouse_nid');
+
+            // mapping (safe)
+            $data['country_id'] = $data['country'] ?? null;
+            $data['visa_category_id'] = $data['visaCategory'] ?? null;
+
+            unset($data['country'], $data['visaCategory']);
+
+            $customer = Customer::create($data);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Customer created successfully',
+                'data' => $customer
+            ]);
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            Log::error("Customer Create Error", [
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ]);
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(), // show real error
+            ], 500);
+        }
     }
 }
