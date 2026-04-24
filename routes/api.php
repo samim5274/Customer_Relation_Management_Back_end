@@ -59,5 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/get-visa-category', [CustomerController::class, 'getVisaCategory']);
         Route::get('/get-country', [CustomerController::class, 'getCountry']);
         Route::post('/create', [CustomerController::class, 'createCustomer']);
+        Route::get('/{id}', [CustomerController::class, 'getCustomerById'])->where('id', '[0-9]+');
+        Route::put('/update/{id}', [CustomerController::class, 'updateCustomer'])->where('id', '[0-9]+');
     });
 });

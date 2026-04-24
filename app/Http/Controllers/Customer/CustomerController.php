@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use App\Models\VisaCategory;
 use App\Models\Country;
+
 
 class CustomerController extends Controller
 {
@@ -71,7 +74,7 @@ class CustomerController extends Controller
                     'message' => 'Something went wrong while fetching countries',
                 ], 500);
             }
-        
+
     }
 
     public function createCustomer(StoreCustomerRequest $request)
@@ -124,6 +127,80 @@ class CustomerController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(), // show real error
+            ], 500);
+        }
+    }
+
+    public function getCustomerById($id){
+        try {
+            $customer = Customer::with(['country', 'visaCategory'])->find($id);
+
+            if (!$customer) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Customer not found',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Customer details fetched successfully',
+                'data' => $customer,
+            ], 200);
+
+        } catch (\Exception $e) {
+            \Log::error("Error fetching customer ID {$id}: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An internal server error occurred',
+                'error' => config('app.debug') ? $e->getMessage() : null,
+            ], 500);
+        }
+    }
+
+    public function updateCustomer(UpdateCustomerRequest $request, $id)
+    {
+        try {
+            $customer = Customer::findOrFail($id);
+            $data = $request->validated();
+
+            // relation id fix
+            $data['country_id'] = $request->country;
+            $data['visa_category_id'] = $request->visaCategory;
+
+            $imageMap = [
+                'user_photo'        => 'photo',
+                'passport_photo'    => 'passport_photo',
+                'nid_photo'         => 'national_id_photo',
+                'spouse_photo'      => 'spouse_photo',
+                'spouse_nid_photo'  => 'spouse_nid_photo',
+            ];
+
+            foreach ($imageMap as $inputName => $dbColumn) {
+                if ($request->hasFile($inputName)) {
+                    // delete old image
+                    if ($customer->$dbColumn) {
+                        Storage::disk('public')->delete($customer->$dbColumn);
+                    }
+                    //save new image
+                    $data[$dbColumn] = $request->file($inputName)->store('customers', 'public');
+                }
+            }
+
+            // ৪. data save for update
+            $customer->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Customer updated successfully!',
+                'data' => $customer
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error("Update Error: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update customer. ' . $e->getMessage(),
             ], 500);
         }
     }

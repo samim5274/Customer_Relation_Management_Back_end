@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('visa_category_id')->nullable()->constrained('visa_categories')->onDelete('restrict');
 
             $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('sku')->unique();
             $table->string('email')->unique();
             $table->string('phone')->unique()->nullable();
             $table->string('password')->default('password');
