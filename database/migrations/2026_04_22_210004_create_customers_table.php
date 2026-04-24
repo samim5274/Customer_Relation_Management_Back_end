@@ -40,13 +40,13 @@ return new class extends Migration
 
             $table->decimal('wallet_balance', 12, 2)->default(0);
 
-            // Submition detials
-            $table->boolean('is_submited')->nullable();
+            // Submission details
+            $table->boolean('is_submitted')->nullable();
             $table->string('passport_no')->nullable();
             $table->date('passport_expiry_date')->nullable();
             $table->string('passport_photo')->nullable();
             $table->string('national_id_photo')->nullable();
-            
+
             $table->string('spouse_name')->nullable();
             $table->string('spouse_photo')->nullable();
             $table->string('spouse_nid')->nullable();

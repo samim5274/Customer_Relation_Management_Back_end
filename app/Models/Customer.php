@@ -31,7 +31,7 @@ class Customer extends Model
         'present_address',
         'permanent_address',
         'wallet_balance',
-        'is_submited',
+        'is_submitted',
         'passport_no',
         'passport_expiry_date',
         'passport_photo',
@@ -49,7 +49,7 @@ class Customer extends Model
         'dob' => 'date',
         'passport_expiry_date' => 'date',
         'is_active' => 'boolean',
-        'is_submited' => 'boolean',
+        'is_submitted' => 'boolean',
         'wallet_balance' => 'decimal:2',
     ];
 

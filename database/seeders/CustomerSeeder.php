@@ -50,7 +50,7 @@ class CustomerSeeder extends Seeder
                 'present_address'      => $faker->address,
                 'permanent_address'    => $faker->address,
                 'wallet_balance'       => $faker->randomFloat(2, 100, 5000),
-                'is_submited'          => $faker->boolean,
+                'is_submitted'          => $faker->boolean,
                 'passport_no'          => strtoupper($faker->bothify('??#######')),
                 'passport_expiry_date' => $faker->dateTimeBetween('+1 year', '+10 years'),
                 'passport_photo'       => null,

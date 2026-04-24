@@ -52,7 +52,7 @@ class StoreCustomerRequest extends FormRequest
             'permanent_address' => 'nullable|string',
 
             // Status
-            'is_submited' => 'boolean',
+            'is_submitted' => 'boolean',
 
             // Profile Photo
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
