@@ -63,3 +63,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/update/{id}', [CustomerController::class, 'updateCustomer'])->where('id', '[0-9]+');
     });
 });
+
+
+// ======================
+// Follow Up Routes
+// ======================
+use App\Http\Controllers\Followup\FollowupController;
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('follow-up')->group(function() {
+        Route::get('/customers', [FollowupController::class, 'getCustomers']);
+    });
+});

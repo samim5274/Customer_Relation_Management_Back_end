@@ -29,7 +29,7 @@ class CustomerSeeder extends Seeder
             return;
         }
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             Customer::create([
                 'country_id'           => $faker->randomElement($countryIds),
                 'visa_category_id'     => $faker->randomElement($visaCategoryIds),
