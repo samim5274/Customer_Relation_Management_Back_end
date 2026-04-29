@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    public function followUp()
+    {
+        return $this->hasMany(FollowUp::class, 'user_id');
+    }
 }

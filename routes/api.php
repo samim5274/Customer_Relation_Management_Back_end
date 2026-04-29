@@ -72,5 +72,7 @@ use App\Http\Controllers\Followup\FollowupController;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('follow-up')->group(function() {
         Route::get('/customers', [FollowupController::class, 'getCustomers']);
+        Route::get('/customers/{id}/history', [FollowupController::class, 'getFollowupHistory']);
+        Route::post('/store', [FollowupController::class, 'store']);
     });
 });

@@ -108,4 +108,9 @@ class Customer extends Model
     {
         return $this->belongsTo(VisaCategory::class, 'visa_category_id');
     }
+
+    public function followUp()
+    {
+        return $this->hasMany(FollowUp::class, 'customer_id');
+    }
 }
