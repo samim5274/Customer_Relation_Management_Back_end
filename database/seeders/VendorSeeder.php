@@ -16,7 +16,7 @@ class VendorSeeder extends Seeder
     public function run(): void
     {
         Vendor::create([
-            'shop_name'         => 'Swift Overseas Tours and Travels',
+            'shop_name'         => 'Swift Overseas',
             'shop_slug'         => Str::slug('Swift Overseas Tours and Travels'),
             'shop_logo'         => 'logos/swift-overseas.png',
             'shop_description'  => 'Your trusted partner for international travel, visa processing, and holiday packages.',
