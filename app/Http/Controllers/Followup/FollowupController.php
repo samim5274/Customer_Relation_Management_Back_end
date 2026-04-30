@@ -58,7 +58,7 @@ class FollowupController extends Controller
             $history = FollowUp::with('user') 
                 ->where('customer_id', $id)
                 ->orderBy('id', 'desc')
-                ->paginate(5);
+                ->paginate(15);
 
             return response()->json([
                 'success' => true,
