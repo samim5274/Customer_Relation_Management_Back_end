@@ -49,6 +49,12 @@ return new class extends Migration
             $table->string('passport_photo')->nullable();
             $table->string('national_id_photo')->nullable();
 
+            // Next follow up date
+            $table->timestamp('last_followup_date')->nullable(); // last_follow_up_date
+            $table->timestamp('next_follow_up_date')->nullable(); // next follow-up 
+            $table->enum('lead_status', ['low', 'medium', 'high'])
+                    ->default('medium');
+
             $table->string('spouse_name')->nullable();
             $table->string('spouse_photo')->nullable();
             $table->string('spouse_nid')->nullable();

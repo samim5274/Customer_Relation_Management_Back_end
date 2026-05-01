@@ -39,6 +39,11 @@ class Customer extends Model
         'passport_expiry_date',
         'passport_photo',
         'national_id_photo',
+
+        'last_followup_date',
+        'next_follow_up_date',
+        'lead_status',
+        
         'spouse_name',
         'spouse_photo',
         'spouse_nid',

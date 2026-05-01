@@ -55,6 +55,7 @@ class CustomerSeeder extends Seeder
                 'passport_expiry_date' => $faker->dateTimeBetween('+1 year', '+10 years'),
                 'passport_photo'       => null,
                 'national_id_photo'    => null,
+                'next_follow_up_date'  => now(),
                 'spouse_name'          => $faker->name,
                 'spouse_nid'           => $faker->numerify('###########'),
             ]);

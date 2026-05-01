@@ -16,7 +16,7 @@ class FollowupController extends Controller
         try {
             $search = $request->query('search');
             $customers = Customer::with(['country','visaCategory'])
-                ->where('is_active', 1)
+                ->where('is_active', 1)->where('next_follow_up_date', '<=', now())
                 ->when($search, function ($query, $search) {
                     return $query->where(function($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%")
@@ -113,8 +113,9 @@ class FollowupController extends Controller
                 $customer = Customer::find($validated['customer_id']);
                 if ($customer) {
                     $customer->update([
-                        'lead_status' => $validated['status'],
-                        'last_followup_date' => now()
+                        'lead_status' => $validated['priority'],
+                        'last_followup_date' => now(),
+                        'next_follow_up_date' => $validated['follow_up_date'],
                     ]);
                 }
 
